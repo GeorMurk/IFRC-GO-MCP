@@ -1,9 +1,3 @@
-# GEORGE KIRAGU
-
-# IM AFRICA
-
-# ©2026
-
 # IFRC GO MCP Server
 
 Local Model Context Protocol (MCP) server for querying the IFRC GO API from Claude Desktop or another MCP client.
@@ -159,5 +153,3 @@ If you get `FATAL: Cannot start server. Missing IFRC_API_TOKEN`, check that `.en
 If you get a 401 response, check that the token is valid for the current IFRC GO API and has not expired.
 
 If you get a 404 response, confirm the server is using `https://goadmin.ifrc.org`, not the older `https://go-api.ifrc.org` host.
-
-If Claude Desktop does not show the tools, restart Claude Desktop after changing the config or server code.
