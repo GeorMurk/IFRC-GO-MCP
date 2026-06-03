@@ -74,6 +74,8 @@ const server = new Server(
   { capabilities: { tools: {} } }
 );
 
+const SPATIAL_ENDPOINTS = ["/api/ipcphasemap/"];
+
 async function callFewsNetApi(endpoint, params = {}) {
   if (!FEWSNET_USERNAME || !FEWSNET_PASSWORD) {
     throw new Error("ERROR: Credentials not found. Set FEWSNET_USERNAME and FEWSNET_PASSWORD in your .env file.");
@@ -81,6 +83,7 @@ async function callFewsNetApi(endpoint, params = {}) {
   const cleanParams = Object.fromEntries(
     Object.entries(params).filter(([_, v]) => v !== undefined && v !== null)
   );
+  const isSpatial = SPATIAL_ENDPOINTS.some((p) => endpoint.startsWith(p));
   try {
     const response = await axios.get(`${BASE_URL}${endpoint}`, {
       params: cleanParams,
@@ -88,7 +91,7 @@ async function callFewsNetApi(endpoint, params = {}) {
         username: FEWSNET_USERNAME,
         password: FEWSNET_PASSWORD,
       },
-      headers: { Accept: "application/json" },
+      headers: { Accept: isSpatial ? "application/geo+json, application/json, */*" : "application/json" },
       timeout: 30000,
     });
     return response.data;

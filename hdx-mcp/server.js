@@ -38,7 +38,7 @@ for (const envPath of [...new Set(envPaths)]) {
 }
 
 const HDX_APP_IDENTIFIER = process.env.HDX_API_TOKEN || process.env.HDX_APP_IDENTIFIER;
-const BASE_URL = "https://hapi.humdata.org/api/v1";
+const HAPI_BASE = "https://hapi.humdata.org/api";
 
 // Auto-install dependencies if missing
 let needsInstall = false;
@@ -74,6 +74,13 @@ const server = new Server(
   { capabilities: { tools: {} } }
 );
 
+// food-security-nutrition-poverty endpoints moved to v2; everything else stays at v1
+const V2_ENDPOINTS = new Set([
+  "/food-security-nutrition-poverty/food-security",
+  "/food-security-nutrition-poverty/food-prices-market-monitor",
+  "/food-security-nutrition-poverty/poverty-rate",
+]);
+
 async function callHapiApi(endpoint, params = {}) {
   if (!HDX_APP_IDENTIFIER) {
     throw new Error(
@@ -81,11 +88,12 @@ async function callHapiApi(endpoint, params = {}) {
       "Get yours at: https://hapi.humdata.org/docs#/Util/get_encoded_identifier_api_v1_encode_identifier_get"
     );
   }
+  const version = V2_ENDPOINTS.has(endpoint) ? "v2" : "v1";
   const cleanParams = Object.fromEntries(
     Object.entries(params).filter(([_, v]) => v !== undefined && v !== null && v !== "")
   );
   try {
-    const response = await axios.get(`${BASE_URL}${endpoint}`, {
+    const response = await axios.get(`${HAPI_BASE}/${version}${endpoint}`, {
       params: {
         ...cleanParams,
         output_format: "json",
@@ -184,21 +192,6 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         },
       },
       {
-        name: "get_data_availability",
-        description: "Check which humanitarian data categories and sub-categories are available by country and administrative level, with last update dates. (Docs: /api/v1/metadata/data_availability)",
-        inputSchema: {
-          type: "object",
-          properties: {
-            category: { type: "string", description: "Data category (e.g. 'affected-people', 'coordination-context', 'food-security-nutrition-poverty', 'population-social')" },
-            subcategory: { type: "string", description: "Data subcategory (e.g. 'refugees', 'idps', 'food-security', 'funding', 'conflict-event')" },
-            location_code: { type: "string", description: "ISO3 country code filter" },
-            admin_level: { type: "integer", description: "Administrative level: 0=country, 1=admin1, 2=admin2" },
-            limit: { type: "integer", default: 200 },
-            offset: { type: "integer", default: 0 },
-          },
-        },
-      },
-      {
         name: "get_sectors",
         description: "Get humanitarian sector codes and names (e.g. Health, Education, Food Security, Shelter, WASH). (Docs: /api/v1/metadata/sector)",
         inputSchema: {
@@ -226,19 +219,6 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         },
       },
       {
-        name: "get_org_types",
-        description: "Get organization type classification codes and descriptions (OCHA standards). (Docs: /api/v1/metadata/org_type)",
-        inputSchema: {
-          type: "object",
-          properties: {
-            code: { type: "string", description: "Org type code filter" },
-            description: { type: "string", description: "Org type description filter" },
-            limit: { type: "integer", default: 100 },
-            offset: { type: "integer", default: 0 },
-          },
-        },
-      },
-      {
         name: "get_currencies",
         description: "Get ISO-4217 currency codes and names used in WFP food price data. (Docs: /api/v1/metadata/currency)",
         inputSchema: {
@@ -251,36 +231,6 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           },
         },
       },
-      {
-        name: "get_wfp_commodities",
-        description: "Get WFP food commodity codes, names, and category classifications. (Docs: /api/v1/metadata/wfp_commodity)",
-        inputSchema: {
-          type: "object",
-          properties: {
-            code: { type: "string", description: "Commodity code filter" },
-            name: { type: "string", description: "Commodity name filter" },
-            category: { type: "string", description: "Commodity category (e.g. 'cereals and tubers', 'pulses and nuts')" },
-            limit: { type: "integer", default: 100 },
-            offset: { type: "integer", default: 0 },
-          },
-        },
-      },
-      {
-        name: "get_wfp_markets",
-        description: "Get WFP market locations with GPS coordinates and administrative hierarchy. (Docs: /api/v1/metadata/wfp_market)",
-        inputSchema: {
-          type: "object",
-          properties: {
-            location_code: { type: "string", description: "ISO3 country code filter" },
-            admin1_code: { type: "string", description: "Admin1 p-code filter" },
-            admin2_code: { type: "string", description: "Admin2 p-code filter" },
-            name: { type: "string", description: "Market name filter" },
-            limit: { type: "integer", default: 100 },
-            offset: { type: "integer", default: 0 },
-          },
-        },
-      },
-
       // ── COORDINATION & CONTEXT ────────────────────────────────────────────────
       {
         name: "get_operational_presence",
@@ -488,7 +438,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       // ── FOOD SECURITY, NUTRITION & POVERTY ───────────────────────────────────
       {
         name: "get_food_security",
-        description: "Get IPC/CH food security phase classification data. IPC phases: 1=None/Minimal, 2=Stressed, 3=Crisis, 4=Emergency, 5=Catastrophe/Famine, '3+'=In Need of Action. (Docs: /api/v1/food-security-nutrition-poverty/food-security)",
+        description: "Get IPC/CH food security phase classification data. IPC phases: 1=None/Minimal, 2=Stressed, 3=Crisis, 4=Emergency, 5=Catastrophe/Famine, '3+'=In Need of Action. (Docs: /api/v2/food-security-nutrition-poverty/food-security)",
         inputSchema: {
           type: "object",
           properties: {
@@ -513,7 +463,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: "get_food_prices",
-        description: "Get WFP VAM food price market monitor data by country, market, and commodity. Price types: Farm Gate, Retail, Wholesale. (Docs: /api/v1/food-security-nutrition-poverty/food-prices-market-monitor)",
+        description: "Get WFP VAM food price market monitor data by country, market, and commodity. Price types: Farm Gate, Retail, Wholesale. (Docs: /api/v2/food-security-nutrition-poverty/food-prices-market-monitor)",
         inputSchema: {
           type: "object",
           properties: {
@@ -541,7 +491,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: "get_poverty_rate",
-        description: "Get multidimensional poverty rate (MPI) data by country and first-level administrative division. (Docs: /api/v1/food-security-nutrition-poverty/poverty-rate)",
+        description: "Get multidimensional poverty rate (MPI) data by country and first-level administrative division. (Docs: /api/v2/food-security-nutrition-poverty/poverty-rate)",
         inputSchema: {
           type: "object",
           properties: {
@@ -681,17 +631,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         });
         break;
 
-      case "get_data_availability":
-        result = await callHapiApi("/metadata/data_availability", {
-          category: args.category,
-          subcategory: args.subcategory,
-          location_code: args.location_code,
-          admin_level: args.admin_level,
-          limit: args.limit || 200,
-          offset: args.offset || 0,
-        });
-        break;
-
       case "get_sectors":
         result = await callHapiApi("/metadata/sector", {
           code: args.code,
@@ -711,39 +650,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         });
         break;
 
-      case "get_org_types":
-        result = await callHapiApi("/metadata/org_type", {
-          code: args.code,
-          description: args.description,
-          limit: args.limit || 100,
-          offset: args.offset || 0,
-        });
-        break;
-
       case "get_currencies":
         result = await callHapiApi("/metadata/currency", {
           code: args.code,
-          name: args.name,
-          limit: args.limit || 100,
-          offset: args.offset || 0,
-        });
-        break;
-
-      case "get_wfp_commodities":
-        result = await callHapiApi("/metadata/wfp_commodity", {
-          code: args.code,
-          name: args.name,
-          category: args.category,
-          limit: args.limit || 100,
-          offset: args.offset || 0,
-        });
-        break;
-
-      case "get_wfp_markets":
-        result = await callHapiApi("/metadata/wfp_market", {
-          location_code: args.location_code,
-          admin1_code: args.admin1_code,
-          admin2_code: args.admin2_code,
           name: args.name,
           limit: args.limit || 100,
           offset: args.offset || 0,
