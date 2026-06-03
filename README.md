@@ -689,7 +689,7 @@ Example questions you can ask an AI assistant:
 
 ---
 
-## FEWS NET FDW MCP Server
+## FEWS NET MCP Server
 
 ### About
 
