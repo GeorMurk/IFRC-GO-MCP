@@ -39,7 +39,7 @@ const axios = require("axios");
 const BASE_URL = "https://api.unhcr.org/rsq/v1";
 
 const server = new Server(
-  { name: "unhcr-resettlement-data-mcp", version: "1.0.0" },
+  { name: "unhcr-resettlement-mcp", version: "1.0.0" },
   { capabilities: { tools: {} } }
 );
 

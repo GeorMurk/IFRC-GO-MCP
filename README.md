@@ -34,7 +34,7 @@ This repository contains seven **MCP servers** that connect LLMs/Agents to live 
 | **Monty MCP**                    | `monty-mcp/`               | Query the Montandon STAC API — geospatial disaster event catalogs and datasets                                                                                                          |
 | **HDX HAPI MCP**                 | `hdx-mcp/`                 | Query the OCHA Humanitarian Data Exchange API — population, displacement, food security, conflict, funding, and climate data                                                            |
 | **UNHCR Refugee Statistics MCP** | `unhcr-refugees-mcp/`      | Query the UNHCR Population Statistics API — refugee and displaced population figures, asylum applications/decisions, durable solutions, and demographics                                |
-| **UNHCR Resettlement Data MCP**  | `unhcr-resettlement-data/` | Query the UNHCR Resettlement Statistics (RSQ) API — submissions, departures, and demographic breakdowns for resettlement programmes                                                     |
+| **UNHCR Resettlement Data MCP**  | `unhcr-resettlement-mcp/` | Query the UNHCR Resettlement Statistics (RSQ) API — submissions, departures, and demographic breakdowns for resettlement programmes                                                     |
 | **FEWS NET FDW MCP**             | `fewsnet-mcp/`             | Query the FEWS NET Famine Early Warning Systems Network API — IPC food security classifications, market prices, crop production, nutrition, trade flows, and humanitarian response data |
 | **IPC-CH MCP**                   | `ipc-mcp/`                 | Query the IPC-CH Public API — official IPC acute and chronic food insecurity analyses, area-level phase data, population tracking, and IDP point data                                   |
 
@@ -108,7 +108,7 @@ cd ifrc-mcp && npm install && cd ..
 cd monty-mcp && npm install && cd ..
 cd hdx-mcp && npm install && cd ..
 cd unhcr-refugees-mcp && npm install && cd ..
-cd unhcr-resettlement-data && npm install && cd ..
+cd unhcr-resettlement-mcp && npm install && cd ..
 cd fewsnet-mcp && npm install && cd ..
 cd ipc-mcp && npm install && cd ..
 ```
@@ -147,7 +147,7 @@ Open it (create it if it doesn't exist) and add the following entries under `mcp
     },
     "unhcr-resettlement": {
       "command": "node",
-      "args": ["/YOUR/PATH/TO/MCPs/unhcr-resettlement-data/server.js"]
+      "args": ["/YOUR/PATH/TO/MCPs/unhcr-resettlement-mcp/server.js"]
     },
     "fewsnet": {
       "command": "node",
