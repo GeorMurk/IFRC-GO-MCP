@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <strong>Originally developed for <img src="https://github.com/anthropics.png?size=20" alt="Claude" height="16" style="vertical-align:middle"/> <a href="https://claude.ai">Claude</a> by Anthropic</strong><br/>
+  <strong>Ideated while using <img src="https://github.com/anthropics.png?size=20" alt="Claude" height="16" style="vertical-align:middle"/> <a href="https://claude.ai">Claude</a> by Anthropic</strong><br/>
   These MCP servers act as linkages between LLMs/Agents and real-world humanitarian data APIs.<br/>
   They are compatible with any MCP-capable AI assistant or agent framework.
 </p>
@@ -22,21 +22,21 @@ This repository contains seven **MCP servers** that connect LLMs/Agents to live 
 
 ## What is MCP?
 
-**Model Context Protocol (MCP)** is an open standard that serves as a linkage layer between LLMs/Agents and external tools, APIs, and data sources. Instead of manually retrieving data and pasting it into a chat window, you install an MCP server once and any compatible AI assistant or agent can call it automatically — like a plugin system for AI. These servers were originally built for [Claude](https://claude.ai) <img src="https://github.com/anthropics.png?size=20" alt="Claude" height="14" style="vertical-align:middle"/> but follow the open MCP standard and work with any LLM or agent that supports the protocol.
+**Model Context Protocol (MCP)** is an open standard that serves as a linkage layer between LLMs/Agents and external tools, APIs, and data sources. Instead of manually retrieving data and pasting it into a chat window, you install an MCP server once and any compatible AI assistant or agent can call it automatically — like a plugin system for AI. These servers were ideated for [Claude](https://claude.ai) <img src="https://github.com/anthropics.png?size=20" alt="Claude" height="14" style="vertical-align:middle"/> but follow the open MCP standard and work with any LLM or agent that supports the protocol.
 
 ---
 
 ## What's in this repo?
 
-| Server                           | Folder                     | What it does                                                                                                                                                                            |
-| -------------------------------- | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **IFRC GO MCP**                  | `ifrc-mcp/`                | Query the IFRC Global Operations platform — appeals, emergencies, field reports, deployed personnel, country profiles, and more                                                         |
-| **Monty MCP**                    | `monty-mcp/`               | Query the Montandon STAC API — geospatial disaster event catalogs and datasets                                                                                                          |
-| **HDX HAPI MCP**                 | `hdx-mcp/`                 | Query the OCHA Humanitarian Data Exchange API — population, displacement, food security, conflict, funding, and climate data                                                            |
-| **UNHCR Refugee Statistics MCP** | `unhcr-refugees-mcp/`      | Query the UNHCR Population Statistics API — refugee and displaced population figures, asylum applications/decisions, durable solutions, and demographics                                |
+| Server                           | Folder                    | What it does                                                                                                                                                                            |
+| -------------------------------- | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **IFRC GO MCP**                  | `ifrc-mcp/`               | Query the IFRC Global Operations platform — appeals, emergencies, field reports, deployed personnel, country profiles, and more                                                         |
+| **Monty MCP**                    | `monty-mcp/`              | Query the Montandon STAC API — geospatial disaster event catalogs and datasets                                                                                                          |
+| **HDX HAPI MCP**                 | `hdx-mcp/`                | Query the OCHA Humanitarian Data Exchange API — population, displacement, food security, conflict, funding, and climate data                                                            |
+| **UNHCR Refugee Statistics MCP** | `unhcr-refugees-mcp/`     | Query the UNHCR Population Statistics API — refugee and displaced population figures, asylum applications/decisions, durable solutions, and demographics                                |
 | **UNHCR Resettlement Data MCP**  | `unhcr-resettlement-mcp/` | Query the UNHCR Resettlement Statistics (RSQ) API — submissions, departures, and demographic breakdowns for resettlement programmes                                                     |
-| **FEWS NET FDW MCP**             | `fewsnet-mcp/`             | Query the FEWS NET Famine Early Warning Systems Network API — IPC food security classifications, market prices, crop production, nutrition, trade flows, and humanitarian response data |
-| **IPC-CH MCP**                   | `ipc-mcp/`                 | Query the IPC-CH Public API — official IPC acute and chronic food insecurity analyses, area-level phase data, population tracking, and IDP point data                                   |
+| **FEWS NET FDW MCP**             | `fewsnet-mcp/`            | Query the FEWS NET Famine Early Warning Systems Network API — IPC food security classifications, market prices, crop production, nutrition, trade flows, and humanitarian response data |
+| **IPC-CH MCP**                   | `ipc-mcp/`                | Query the IPC-CH Public API — official IPC acute and chronic food insecurity analyses, area-level phase data, population tracking, and IDP point data                                   |
 
 **IFRC** stands for the _International Federation of Red Cross and Red Crescent Societies_. The **GO** (Global Operations)[IFRC GO](https://go.ifrc.org) platform is a public database tracking humanitarian operations, disaster appeals, field reports, and response activities worldwide.
 
@@ -1033,3 +1033,5 @@ Always pass a `country` or `start`/`end` year filter when using this tool. Witho
 - Make sure you saved the config file and fully restarted the application (quit, don't just close the window).
 - Check that the file paths in the config exactly match where you cloned this repository.
 - On macOS you can verify paths by running `ls /YOUR/PATH/TO/MCPs/ifrc-mcp/server.js` in Terminal.
+
+# Thanks for all Humanitarians for the Great work you do for the Society/Communities and for the Humanitarian Organizations that provide and publish data that facilitate Humanitarian work, Thank you.
