@@ -10,6 +10,8 @@
   <a href="https://ipcinfo.org"><img src="https://www.ipcinfo.org/fileadmin/templates/ipcinfo-assets/SVG_120218/IPC_Interim_Logo_Blu_EN.png" alt="IPC" height="80"/></a>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://reliefweb.int"><img src="https://reliefweb.int/themes/custom/common_design_subtheme/img/logos/rw-logo-desktop.svg" alt="ReliefWeb" height="80"/></a>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.hotosm.org"><img src="https://github.com/hotosm.png?size=120" alt="HOTOSM" height="80"/></a>
 </p>
 
 <p align="center">
@@ -18,7 +20,7 @@
   They are compatible with any MCP-capable AI assistant or agent framework.
 </p>
 
-This repository contains eight **MCP servers** that connect LLMs/Agents to live humanitarian data — letting any MCP-compatible AI assistant query real-world disaster, displacement, food security, and resettlement data without copy-pasting or manual lookups.
+This repository contains nine **MCP servers** that connect LLMs/Agents to live humanitarian data — letting any MCP-compatible AI assistant query real-world disaster, displacement, food security, resettlement, and geospatial mapping data without copy-pasting or manual lookups.
 
 ---
 
@@ -40,6 +42,7 @@ This repository contains eight **MCP servers** that connect LLMs/Agents to live 
 | **FEWS NET FDW MCP**             | `fewsnet-mcp/`            | Query the FEWS NET Famine Early Warning Systems Network API — IPC food security classifications, market prices, crop production, nutrition, trade flows, and humanitarian response data |
 | **IPC-CH MCP**                   | `ipc-mcp/`                | Query the IPC-CH Public API — official IPC acute and chronic food insecurity analyses, area-level phase data, population tracking, and IDP point data                                   |
 | **ReliefWeb MCP**                | `reliefweb-mcp/`          | Query the ReliefWeb API — humanitarian reports, situation reports, maps, disaster pages, country profiles, job listings, training opportunities, and taxonomy reference data from 4,000+ sources |
+| **HOTOSM Raw Data MCP**          | `hotosm-mcp/`             | Query the HOTOSM Raw Data API — export live OpenStreetMap data by geometry and tag filters, track async export tasks, retrieve country boundaries, and manage scheduled exports                  |
 
 **IFRC** stands for the _International Federation of Red Cross and Red Crescent Societies_. The **GO** (Global Operations)[IFRC GO](https://go.ifrc.org) platform is a public database tracking humanitarian operations, disaster appeals, field reports, and response activities worldwide.
 
@@ -52,6 +55,8 @@ This repository contains eight **MCP servers** that connect LLMs/Agents to live 
 **IPC-CH** is the [Integrated Food Security Phase Classification](https://ipcinfo.org) — the global standard for classifying acute and chronic food insecurity. Their Public API provides official analyses, sub-national area phase data, population estimates, and IDP point data across crisis-affected countries.
 
 **ReliefWeb** is OCHA's leading online platform for reliable and timely humanitarian information. It aggregates reports, situation reports, maps, press releases, jobs, and training opportunities from 4,000+ trusted sources — UN agencies, NGOs, governments, and research institutions — covering disasters, crises, and humanitarian themes worldwide. Their API provides full-text search, rich filtering, faceting, and taxonomy reference data.
+
+**HOTOSM** (Humanitarian OpenStreetMap Team) is a global team that activates the power of open mapping during crises and for development. The [Raw Data API](https://api-prod.raw-data.hotosm.org/v1/) provides live, on-demand exports of OpenStreetMap data — buildings, roads, waterways, and any OSM feature — filtered by geographic area and tags, returned as GeoJSON, Shapefile, FlatGeobuf, and other formats. Most endpoints are public and require no authentication.
 
 ---
 
@@ -68,7 +73,7 @@ Before you start, make sure you have:
 - **An IPC API key** — register at [ipcinfo.org](https://ipcinfo.org) to obtain a free API key
 - **A ReliefWeb app name** — register a free app name at [apidoc.reliefweb.int](https://apidoc.reliefweb.int/) (used as an identifier in API requests, not a secret key)
 
-> **Note:** The two UNHCR servers require no API token — they use a fully public API.
+> **Note:** The two UNHCR servers and the HOTOSM server require no API token for most operations — they use fully public APIs. An optional OSM OAuth access token unlocks metrics and admin endpoints on the HOTOSM server.
 
 ---
 
@@ -104,9 +109,12 @@ IPC_API_KEY=your_ipc_api_key_here
 
 # Required by ReliefWeb server
 RELIEFWEB_APPNAME=your-app-name-here
+
+# Optional — HOTOSM server (public endpoints work without this; needed for metrics and admin ops)
+HOTOSM_ACCESS_TOKEN=your_osm_oauth_token_here
 ```
 
-Replace the placeholder values with your actual tokens. The UNHCR servers need no entries in this file.
+Replace the placeholder values with your actual tokens. The UNHCR servers and the HOTOSM server need no entries in this file for basic use.
 
 > **Tip:** You can also place the `.env` file inside an individual server folder (e.g., `hdx-mcp/`). Each server searches in multiple locations.
 
@@ -121,6 +129,7 @@ cd unhcr-resettlement-mcp && npm install && cd ..
 cd fewsnet-mcp && npm install && cd ..
 cd ipc-mcp && npm install && cd ..
 cd reliefweb-mcp && npm install && cd ..
+cd hotosm-mcp && npm install && cd ..
 ```
 
 ---
@@ -170,12 +179,16 @@ Open it (create it if it doesn't exist) and add the following entries under `mcp
     "reliefweb": {
       "command": "node",
       "args": ["/YOUR/PATH/TO/MCPs/reliefweb-mcp/server.js"]
+    },
+    "hotosm": {
+      "command": "node",
+      "args": ["/YOUR/PATH/TO/MCPs/hotosm-mcp/server.js"]
     }
   }
 }
 ```
 
-After saving, **restart Claude Desktop** (or your MCP-compatible agent host). You should see all eight servers' tools available in the tools panel.
+After saving, **restart Claude Desktop** (or your MCP-compatible agent host). You should see all nine servers' tools available in the tools panel.
 
 > **Other MCP hosts:** If you are connecting these servers to a different LLM or agent framework (e.g. a custom agent built with the MCP SDK, or another Claude-compatible tool), consult that framework's documentation for how to register stdio-transport MCP servers.
 
@@ -1128,6 +1141,125 @@ ReliefWeb maintains controlled vocabularies (taxonomies) used to tag and classif
 
 ---
 
+## HOTOSM Raw Data MCP Server
+
+### About
+
+This server links LLMs/Agents to the [HOTOSM Raw Data API](https://api-prod.raw-data.hotosm.org/v1/) — a live export service for OpenStreetMap data maintained by the Humanitarian OpenStreetMap Team. It lets you extract geospatial features (buildings, roads, waterways, health facilities, etc.) for any area on Earth, filtered by OSM tags, and delivered in your preferred format.
+
+Most tools require **no authentication**. An optional OSM OAuth access token (obtained via the login flow) unlocks metrics, admin endpoints, and custom HDX uploads.
+
+Example questions you can ask an AI assistant:
+
+- _"Export all buildings in a 1km radius around Nairobi CBD as GeoJSON."_
+- _"What is the status of the OSM database — when was it last updated?"_
+- _"Get the country boundary for Kenya from OSM."_
+- _"Export all roads in Kampala as a Shapefile."_
+- _"Check the status of my export task."_
+
+### Available Tools
+
+---
+
+#### Status & Reference
+
+| Tool | Description |
+| --- | --- |
+| `get_database_status` | Check when the OSM database was last updated |
+| `list_countries` | List all countries with optional name search filter |
+| `get_country` | Get a specific country's details and GeoJSON boundary by ID |
+| `get_osm_feature` | Retrieve any OSM feature by its OSM ID |
+
+---
+
+#### Data Exports (Snapshots)
+
+A **snapshot** is an on-demand export of raw OSM data for a given geometry. The async endpoint queues the job and returns a task ID; poll `get_task_status` until `SUCCESS`, then use `get_s3_file` to download.
+
+| Tool | Description |
+| --- | --- |
+| `request_snapshot` | Request an async OSM export — returns a task ID. Supports geometry, tag filters, output format (GeoJSON, Shapefile, FlatGeobuf, KML, CSV, MBTiles, SQL), and geometry type filters |
+| `request_snapshot_plain` | Get an immediate synchronous GeoJSON response for small areas (≤ 30 sq km) — no task queue |
+
+**Supported output formats:** `geojson`, `shp`, `fgb`, `mbtiles`, `kml`, `csv`, `sql`
+
+**Tag filter example:**
+```json
+{
+  "tags": { "all_geometry": { "join_or": { "building": [] } } },
+  "attributes": { "all_geometry": ["name"] }
+}
+```
+
+---
+
+#### Custom Exports
+
+| Tool | Description |
+| --- | --- |
+| `request_custom_snapshot` | Request a multi-category export (e.g. Roads + Buildings in one job) with optional HDX upload. Requires auth |
+| `request_custom_snapshot_yaml` | Same as above but accepts a YAML configuration string. Requires auth |
+
+---
+
+#### Task Management
+
+| Tool | Description |
+| --- | --- |
+| `get_task_status` | Check the status and result (download URL) of an export task by task ID |
+| `revoke_task` | Cancel a running or queued task. Requires auth |
+| `get_task_queue_info` | Get general task queue status |
+| `get_task_queue_details` | Get detailed info for a specific named queue |
+| `ping_workers` | Ping Celery workers to verify they are online |
+| `inspect_workers` | See which tasks are currently running on workers |
+
+---
+
+#### S3 Files
+
+| Tool | Description |
+| --- | --- |
+| `list_s3_files` | List exported files stored on S3 (default folder: `/HDX`) |
+| `get_s3_file` | Get a presigned download URL or metadata for a specific S3 export file |
+
+---
+
+#### Scheduled Exports (Cron Jobs)
+
+| Tool | Description |
+| --- | --- |
+| `list_cron_jobs` | List all recurring scheduled export jobs |
+| `search_cron_jobs` | Search scheduled jobs by dataset title |
+| `get_cron_job` | Get details for a specific scheduled job by ID |
+
+---
+
+#### Metrics (Auth Required)
+
+| Tool | Description |
+| --- | --- |
+| `get_metrics_summary` | Aggregated download/upload statistics grouped by day/month/quarter/year |
+| `get_meta_downloads` | Paginated per-file download counts |
+
+---
+
+#### Authentication
+
+| Tool | Description |
+| --- | --- |
+| `get_login_url` | Get the OSM OAuth2 login URL — visit it in a browser to obtain an access token |
+| `get_my_profile` | Get the authenticated user's OSM profile. Requires auth |
+
+---
+
+**Typical export workflow:**
+
+1. `request_snapshot` → returns `{"task_id": "...", "queue": 0}`
+2. `get_task_status` → poll until `"status": "SUCCESS"`
+3. Result contains `download_url` — pass to `get_s3_file` or download directly
+
+---
+
 ## Troubleshooting
 
 ### IFRC GO Server
@@ -1184,6 +1316,19 @@ A filter field value is invalid or doesn't match the taxonomy. Use `get_referenc
 
 **`Search returns 0 results`**
 Taxonomy filter fields require exact string matches (e.g. `"Flood"` not `"flood"`, `"Administration/Finance"` not just `"Finance"`). Use `get_reference_taxonomy` to look up the correct values.
+
+---
+
+### HOTOSM Server
+
+**`API Error 403: OSM Authentication failed`**
+Your `.env` contains an invalid or expired `HOTOSM_ACCESS_TOKEN`. Either remove the token (public endpoints work without it) or obtain a fresh token by calling `get_login_url`, visiting the returned URL, and copying the token from the callback response.
+
+**`request_snapshot` returns a task ID but `get_task_status` never shows SUCCESS**
+Large areas or heavy tag filters can take several minutes to process. Poll `get_task_status` every 10–30 seconds. If the task stays in `PENDING` for more than 5 minutes, try a smaller area or simpler filter.
+
+**`request_snapshot_plain` returns 403**
+The synchronous plain endpoint requires authentication on the production server. Use `request_snapshot` (async) instead, or obtain a valid OSM access token.
 
 ---
 

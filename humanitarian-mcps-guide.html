@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Humanitarian AI Tools — A Beginner's Guide to 7 Powerful MCPs</title>
+<title>Humanitarian AI Tools — A Beginner's Guide to 8 Powerful MCPs</title>
 <style>
   :root {
     --blue: #2563eb;
@@ -20,6 +20,8 @@
     --amber-light: #fef3c7;
     --sky: #0369a1;
     --sky-light: #e0f2fe;
+    --hot: #d73f3f;
+    --hot-light: #fce7e7;
     --gray: #374151;
     --gray-light: #f3f4f6;
     --white: #ffffff;
@@ -145,6 +147,7 @@
   .fews  .card-link { color: #b45309; border-color: #fcd34d; }
   .ipc   .card-link { color: #0d9488; border-color: #5eead4; }
   .rw    .card-link { color: #0369a1; border-color: #7dd3fc; }
+  .hot   .card-link { color: #d73f3f; border-color: #fca5a5; }
 
   .mcp-card.ifrc  { border-color: #fca5a5; background: linear-gradient(145deg, #fff5f5, white); }
   .mcp-card.hdx   { border-color: #93c5fd; background: linear-gradient(145deg, #eff6ff, white); }
@@ -153,6 +156,7 @@
   .mcp-card.fews  { border-color: #fcd34d; background: linear-gradient(145deg, #fffbeb, white); }
   .mcp-card.ipc   { border-color: #5eead4; background: linear-gradient(145deg, #f0fdfa, white); }
   .mcp-card.rw    { border-color: #7dd3fc; background: linear-gradient(145deg, #f0f9ff, white); }
+  .mcp-card.hot   { border-color: #fca5a5; background: linear-gradient(145deg, #fff5f5, white); }
 
   .card-icon {
     width: 52px; height: 52px;
@@ -171,6 +175,7 @@
   .fews  .card-icon { background: #fef3c7; }
   .ipc   .card-icon { background: #ccfbf1; }
   .rw    .card-icon { background: #e0f2fe; }
+  .hot   .card-icon { background: #fce7e7; }
 
   .mcp-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
   .mcp-card .tagline { font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 10px; }
@@ -181,6 +186,7 @@
   .fews  .tagline { color: #b45309; }
   .ipc   .tagline { color: #0d9488; }
   .rw    .tagline { color: #0369a1; }
+  .hot   .tagline { color: #d73f3f; }
   .mcp-card p { font-size: 14px; color: #4b5563; }
 
   /* ── DEEP DIVE SECTIONS ── */
@@ -212,6 +218,7 @@
   .fews-b  { background: #fef3c7; color: #92400e; }
   .ipc-b   { background: #ccfbf1; color: #0f766e; }
   .rw-b    { background: #e0f2fe; color: #0369a1; }
+  .hot-b   { background: #fce7e7; color: #b91c1c; }
 
   .dive-header h2 { font-size: 26px; margin-bottom: 0; }
 
@@ -243,6 +250,7 @@
   .example-box.fews  { background: #fffbeb; border-color: #f59e0b; }
   .example-box.ipc   { background: #f0fdfa; border-color: #14b8a6; }
   .example-box.rw    { background: #f0f9ff; border-color: #0ea5e9; }
+  .example-box.hot   { background: #fff5f5; border-color: #ef4444; }
 
   .example-box .ex-label {
     font-size: 11px;
@@ -355,6 +363,7 @@
   .t-fews  { color: #b45309; border-color: #fcd34d; background: #fffbeb; }
   .t-ipc   { color: #0d9488; border-color: #5eead4; background: #f0fdfa; }
   .t-rw    { color: #0369a1; border-color: #7dd3fc; background: #f0f9ff; }
+  .t-hot   { color: #d73f3f; border-color: #fca5a5; background: #fff5f5; }
 
   /* ── CALLOUT ── */
   .callout {
@@ -394,8 +403,8 @@
 <!-- ═══════════════════════════ HERO ═══════════════════════════ -->
 <div class="hero">
   <div class="hero-badge"><img src="https://www.dropbox.com/scl/fo/zf8hkvg5vtq4hw1szt45c/AFToX7BwM6JvO2GNCUJ7yaA/icons/Colour/png/IFRC-icons-colour_Share-network.png?rlkey=18wk61zszq2cycrgwy9v4rutw&e=1&dl=1" alt="Share network" style="height:16px;width:auto;object-fit:contain;vertical-align:middle;margin-right:6px;"> Humanitarian AI Toolkit</div>
-  <h1>7 Powerful Data Tools<br>for Humanitarian Work</h1>
-  <p>A beginner-friendly guide to IFRC GO, HDX, UNHCR Refugee Statistics, UNHCR Resettlement, FEWS NET, IPC-CH, and ReliefWeb — and how AI assistants can use them to answer real questions.</p>
+  <h1>8 Powerful Data Tools<br>for Humanitarian Work</h1>
+  <p>A beginner-friendly guide to IFRC GO, HDX, UNHCR Refugee Statistics, UNHCR Resettlement, FEWS NET, IPC-CH, ReliefWeb, and HOTOSM Raw Data — and how AI assistants can use them to answer real questions.</p>
   <div class="hero-pills">
     <span class="pill"><img src="https://go.ifrc.org/7.26.0/asset-go-logo-2020-D07sIPWn.svg" alt="IFRC GO"> IFRC GO</span>
     <span class="pill"><img src="https://avatars.githubusercontent.com/u/5087346?s=120&v=4" alt="HDX"> HDX</span>
@@ -404,6 +413,7 @@
     <span class="pill"><img src="https://fews.net/themes/custom/outline_frontend/dist/assets/svg/logos/fewsnet-logo.svg" alt="FEWS NET"> FEWS NET</span>
     <span class="pill"><img src="https://www.ipcinfo.org/fileadmin/templates/ipcinfo-assets/SVG_120218/IPC_Interim_Logo_Blu_EN.png" alt="IPC"> IPC-CH</span>
     <span class="pill"><img src="https://reliefweb.int/themes/custom/common_design_subtheme/img/logos/rw-logo-desktop.svg" alt="ReliefWeb"> ReliefWeb</span>
+    <span class="pill"><img src="https://github.com/hotosm.png?size=40" alt="HOTOSM" style="border-radius:50%"> HOTOSM</span>
   </div>
 </div>
 
@@ -498,9 +508,9 @@
 <!-- ═══════════════════════════ OVERVIEW CARDS ═══════════════════════════ -->
 <section>
   <div class="container">
-    <div class="section-label" style="color:var(--orange)">The Seven Tools</div>
+    <div class="section-label" style="color:var(--orange)">The Eight Tools</div>
     <h2>Meet the MCPs</h2>
-    <p class="lead">Each tool connects to a different official humanitarian database. Together they cover disaster response, food security, famine early warning, displacement, refugee resettlement, and humanitarian information management.</p>
+    <p class="lead">Each tool connects to a different official humanitarian database. Together they cover disaster response, food security, famine early warning, displacement, refugee resettlement, humanitarian information management, and open geospatial mapping.</p>
 
     <div class="mcp-grid">
       <div class="mcp-card ifrc">
@@ -554,6 +564,13 @@
         <h3>ReliefWeb Humanitarian Information</h3>
         <p>OCHA's leading humanitarian platform — situation reports, maps, analyses, job listings, and training opportunities aggregated from 4,000+ trusted sources across UN agencies, NGOs, and governments worldwide.</p>
         <div class="card-links"><a class="card-link" href="https://reliefweb.int/" target="_blank" rel="noopener">ReliefWeb ↗</a><a class="card-link" href="https://apidoc.reliefweb.int/" target="_blank" rel="noopener">API Docs ↗</a></div>
+      </div>
+      <div class="mcp-card hot">
+        <div class="card-icon"><img src="https://github.com/hotosm.png?size=120" alt="HOTOSM" style="border-radius:50%"></div>
+        <p class="tagline">HOTOSM Raw Data</p>
+        <h3>Humanitarian OpenStreetMap Team</h3>
+        <p>Live OpenStreetMap data exports for any area on Earth — buildings, roads, waterways, health facilities, and more — filtered by tags and delivered as GeoJSON, Shapefile, or other formats. Fully public API.</p>
+        <div class="card-links"><a class="card-link" href="https://www.hotosm.org/" target="_blank" rel="noopener">HOTOSM ↗</a><a class="card-link" href="https://export.hotosm.org" target="_blank" rel="noopener">Export Tool ↗</a></div>
       </div>
     </div>
   </div>
@@ -989,6 +1006,67 @@
       </div>
     </div>
 
+    <!-- ── HOTOSM ── -->
+    <div class="deep-dive">
+      <div class="dive-header">
+        <span class="dive-badge hot-b"><img src="https://github.com/hotosm.png?size=40" alt="HOTOSM" style="border-radius:50%"> HOTOSM Raw Data</span>
+        <h2>OpenStreetMap data, on demand, for any place on Earth</h2>
+      </div>
+      <p>The Humanitarian OpenStreetMap Team (HOT) mobilises volunteers to map crisis-affected areas so responders have the geographic data they need. The Raw Data API makes it trivially easy to extract live OSM features — buildings, roads, water points, health facilities — for any bounding area, filtered by any OSM tag, and exported in the format your GIS tool expects. No account required for public exports.</p>
+
+      <div class="capabilities-grid">
+        <div class="cap-item">
+          <strong>🏠 Buildings</strong>
+          Export building footprints for any neighbourhood or district
+        </div>
+        <div class="cap-item">
+          <strong>🛣️ Roads &amp; Paths</strong>
+          Highway networks at any level — from motorways to footpaths
+        </div>
+        <div class="cap-item">
+          <strong>💧 Water &amp; Sanitation</strong>
+          Rivers, waterways, water points, and sanitation features
+        </div>
+        <div class="cap-item">
+          <strong>🏥 Health Facilities</strong>
+          Hospitals, clinics, and pharmacies mapped by OSM volunteers
+        </div>
+        <div class="cap-item">
+          <strong>🌍 Country Boundaries</strong>
+          Official country GeoJSON boundaries derived from OSM
+        </div>
+        <div class="cap-item">
+          <strong>📦 Multiple Formats</strong>
+          GeoJSON, Shapefile, FlatGeobuf, KML, CSV, MBTiles, SQL
+        </div>
+        <div class="cap-item">
+          <strong>⏱️ Live OSM Data</strong>
+          Data last updated: tracked live — check with <code>get_database_status</code>
+        </div>
+        <div class="cap-item">
+          <strong>📅 Scheduled Exports</strong>
+          Set up recurring exports (cron jobs) for regularly-updated areas
+        </div>
+      </div>
+
+      <div class="example-box hot">
+        <div class="ex-label">💬 Example conversation</div>
+        <div class="prompt">You: "Export all health facilities in Maiduguri, Nigeria as GeoJSON so I can map response coverage."</div>
+        <div class="response">
+          <strong>AI (using HOTOSM Raw Data MCP):</strong><br>
+          "I've submitted an export request for Maiduguri with the tag filter <code>amenity=hospital|clinic|health_centre</code>. The task ID is <code>f3a2...</code>. Checking status… the export completed in 12 seconds. The GeoJSON file (0.08 MB) contains 34 health facilities and is available at the S3 download link. Would you like me to also export roads so you can calculate travel times?"
+        </div>
+      </div>
+
+      <div class="example-box hot">
+        <div class="ex-label">💬 Another example</div>
+        <div class="prompt">You: "Get the boundary of Kenya and all major roads in Nairobi County."</div>
+        <div class="response">
+          <strong>AI:</strong> Calls <code>list_countries</code> to find Kenya's country ID, then <code>get_country</code> to retrieve its GeoJSON boundary. Follows up with <code>request_snapshot</code> for Nairobi County filtered to <code>highway=primary|secondary|tertiary</code> — returning a Shapefile suitable for QGIS or ArcGIS.
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1039,6 +1117,12 @@
             <td>Decide where their next grant will have the most impact</td>
             <td>HDX + IFRC GO + UNHCR Stats + IPC-CH + ReliefWeb</td>
             <td>Cross-references severity, funding gaps, and operational presence to surface high-need, low-resource locations, then retrieves the latest situation reports for context</td>
+          </tr>
+          <tr>
+            <td><strong>GIS &amp; Mapping Teams</strong></td>
+            <td>Prepare base maps and infrastructure data for field operations and situation maps</td>
+            <td>HOTOSM Raw Data</td>
+            <td>Exports buildings, roads, health facilities, and water points for any target area in GeoJSON or Shapefile format — ready to load into QGIS, ArcGIS, or web maps without manual OSM downloads</td>
           </tr>
         </tbody>
       </table>
@@ -1238,6 +1322,18 @@
           </div>
         </div>
       </li>
+      <li>
+        <div class="combo-icon">🗺️</div>
+        <div class="combo-text">
+          <strong>Crisis Response Base Map</strong>
+          <span>"For the flood-affected districts in South Sudan: export all roads, health facilities, and water points from OSM, then overlay with IPC Phase 3+ population data and IFRC active operations."</span>
+          <div class="combo-tags">
+            <span class="combo-tag t-hot">HOTOSM</span>
+            <span class="combo-tag t-ipc">IPC-CH</span>
+            <span class="combo-tag t-ifrc">IFRC GO</span>
+          </div>
+        </div>
+      </li>
     </ul>
   </div>
 </section>
@@ -1255,7 +1351,7 @@
 
 <!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
 <footer>
-  <p>Data sourced from <strong>IFRC GO</strong>, <strong>OCHA HDX</strong>, <strong>UNHCR</strong>, <strong>UNHCR RSQ</strong>, <strong>FEWS NET</strong>, <strong>IPC-CH</strong>, and <strong>ReliefWeb</strong> — all official humanitarian databases. MCPs connect AI assistants directly to these live sources.</p>
+  <p>Data sourced from <strong>IFRC GO</strong>, <strong>OCHA HDX</strong>, <strong>UNHCR</strong>, <strong>UNHCR RSQ</strong>, <strong>FEWS NET</strong>, <strong>IPC-CH</strong>, <strong>ReliefWeb</strong>, and <strong>HOTOSM</strong> — all official humanitarian databases. MCPs connect AI assistants directly to these live sources.</p>
   <p>Thanks for all Humanitarians for the Great work you do for the Society/Communities and for the Humanitarian
   Organizations that provide and publish data that facilitate Humanitarian work, Thank you.<strong></p>
 </footer>
